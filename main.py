@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 
 if __name__ == "__main__":
     #print("Hello World")
-    images, labels = load_images_labels(5000)
+    images, labels = load_images_labels(1000)
     train_images, train_labels, test_images, test_labels = split_dataset(images, labels)
     #print(images[0])
     #print(test_images)
@@ -25,9 +25,13 @@ if __name__ == "__main__":
     # Training loop
     num_epochs = 10
     for epoch in range(num_epochs):
-        for inputs, labels in train_loader:
+        for batch in train_loader:
+            inputs, labels = batch["data"], batch["label"]
+            print(inputs.size(), labels.size())
             optimizer.zero_grad()
+            #print(inputs)
             outputs = model(inputs)
+            print(outputs.size())
             loss = criterion(outputs, labels)
             loss.backward()
             optimizer.step()

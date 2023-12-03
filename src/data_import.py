@@ -8,7 +8,7 @@ from torch.utils.data import Dataset
 
 class GalaxyDataset(Dataset):
     def __init__(self, data, labels, transform=None):
-        self.data = data
+        self.data = torch.permute(data,(0,3,1,2))
         self.labels = labels
         self.transform = transform
 
@@ -33,7 +33,7 @@ def load_images_labels(size=17735):
     images, labels = load_galaxy10()
 
     # To convert the labels to categorical 10 classes
-    #labels = to_categorical(labels, 10)
+    labels = to_categorical(labels, 10)
     # To convert to desirable type
     labels = torch.tensor(labels[:size], dtype=torch.float32)
     images = torch.tensor(images[:size], dtype=torch.float32)
