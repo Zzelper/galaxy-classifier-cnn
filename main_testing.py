@@ -5,9 +5,21 @@ from torch.utils.data import DataLoader
 from torchvision import transforms
 from sklearn.model_selection import train_test_split
 from galaxy10_decals_dataset import Galaxy10
+import json
+
+# Load hyperparameters from params.json
+with open('params.json') as f:
+    params = json.load(f)
+
+# Extract hyperparameters
+num_classes = params["num_classes"]
+batch_size = params["batch_size"]
+learning_rate = params["learning_rate"]
+num_epochs = params["num_epochs"]
+random_seed = params["random_seed"]
 
 # Set random seed for reproducibility
-torch.manual_seed(42)
+torch.manual_seed(random_seed)
 
 # Define the CNN model
 class GalaxyCNN(nn.Module):
@@ -50,11 +62,11 @@ train_loader = DataLoader(train_dataset, batch_size=32, shuffle=True)
 test_loader = DataLoader(test_dataset, batch_size=32, shuffle=False)
 
 # Instantiate the model
-model = GalaxyCNN()
+model = GalaxyCNN(num_classes=num_classes)
 
 # Define loss function and optimizer
 criterion = nn.CrossEntropyLoss()
-optimizer = optim.Adam(model.parameters(), lr=0.001)
+optimizer = optim.Adam(model.parameters(), lr=learning_rate)
 
 # Training the model
 num_epochs = 10
