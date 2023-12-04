@@ -3,11 +3,9 @@ from src.model import *
 import matplotlib.pyplot as plt
 
 if __name__ == "__main__":
-    #print("Hello World")
-    images, labels = load_images_labels(1000)
+    images, labels = load_images_labels(25)
     train_images, train_labels, test_images, test_labels = split_dataset(images, labels)
-    #print(images[0])
-    #print(test_images)
+
     # Load your dataset and apply data augmentation
     train_dataset = GalaxyDataset(train_images, train_labels)
     test_dataset = GalaxyDataset(test_images, test_labels)
@@ -27,11 +25,11 @@ if __name__ == "__main__":
     for epoch in range(num_epochs):
         for batch in train_loader:
             inputs, labels = batch["data"], batch["label"]
-            print(inputs.size(), labels.size())
+            #print(inputs.size(), labels.size())
             optimizer.zero_grad()
             #print(inputs)
             outputs = model(inputs)
-            print(outputs.size())
+            #print(outputs.size())
             loss = criterion(outputs, labels)
             loss.backward()
             optimizer.step()
@@ -42,10 +40,12 @@ if __name__ == "__main__":
     correct = 0
     total = 0
     with torch.no_grad():
-        for inputs, labels in test_loader:
+        for batch in test_loader:
+            inputs, labels = batch["data"], batch["label"]
             outputs = model(inputs)
-            _, predicted = torch.max(outputs, 1)
+            predicted = outputs.argmax(1)
             total += labels.size(0)
+            labels = labels.argmax(1)
             correct += (predicted == labels).sum().item()
 
     accuracy = 100 * correct / total

@@ -27,7 +27,7 @@ class GalaxyDataset(Dataset):
 def to_categorical(y, num_classes):
     return np.eye(num_classes)[y]
 
-def load_images_labels(size=17735):
+def load_images_labels(step=1):
     # To load images and labels (will download automatically at the first time)
     # First time downloading location will be ~/.astroNN/datasets/
     images, labels = load_galaxy10()
@@ -35,8 +35,8 @@ def load_images_labels(size=17735):
     # To convert the labels to categorical 10 classes
     labels = to_categorical(labels, 10)
     # To convert to desirable type
-    labels = torch.tensor(labels[:size], dtype=torch.float32)
-    images = torch.tensor(images[:size], dtype=torch.float32)
+    labels = torch.tensor(labels[::step], dtype=torch.float32)
+    images = torch.tensor(images[::step], dtype=torch.float32)
     return images, labels
 
 def split_dataset(images, labels):
@@ -44,3 +44,5 @@ def split_dataset(images, labels):
     train_images, train_labels, test_images, test_labels = images[train_idx], labels[train_idx], images[test_idx], labels[test_idx]
     return train_images, train_labels, test_images, test_labels
 
+def get_classifier(y):
+    return y
