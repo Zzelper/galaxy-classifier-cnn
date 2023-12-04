@@ -28,7 +28,10 @@ def load_images_labels():
     labels8 = labels[8000:8010]
     labels9 = labels[9000:9010]
     labels10 = labels[10000:10010]
-    new_labels = np.concatenate((labels1, labels2, labels3, labels4, labels5, labels6, labels7, labels8, labels9, labels10), axis=0)
+    labels11 = labels[11000:11010]
+    labels12 = labels[12000:12010]
+    new_labels = np.concatenate((labels1, labels2, labels3, labels4, labels5, labels6, labels7, labels8, labels9, labels10,
+                                 labels11, labels12), axis=0)
 
     images1 = images[:10]
     images2 = images[1000:1010]
@@ -40,7 +43,10 @@ def load_images_labels():
     images8 = images[8000:8010]
     images9 = images[9000:9010]
     images10 = images[10000:10010]
-    new_images = np.concatenate((images1, images2, images3, images4, images5, images6, images7, images8, images9, images10), axis=0)
+    images11 = images[11000:11010]
+    images12 = images[12000:12010]
+    new_images = np.concatenate((images1, images2, images3, images4, images5, images6, images7, images8, images9, images10,
+                                 images11, images12), axis=0)
 
     # To convert to desirable type
     new_labels = torch.tensor(new_labels[:100], dtype=torch.float32)
@@ -93,8 +99,8 @@ if __name__ == "__main__":
     images = images.permute(0, 3, 1, 2)
     
     # Normalize the images
-    normalize = transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
-    images = normalize(images)
+    #normalize = transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
+    #images = normalize(images)
 
     # Split the data into training and testing sets
     train_images, train_labels, test_images, test_labels = split_dataset(images, labels)
@@ -103,9 +109,11 @@ if __name__ == "__main__":
     batch_size = 8  # Choose an appropriate batch size
     train_dataset = list(zip(train_images, train_labels))
     train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
+    test_dataset = list(zip(test_images, test_labels))
+    test_loader = DataLoader(test_dataset, batch_size=batch_size, shuffle=True)
 
     # Define the number of classes and epochs
-    num_epochs = 50  # Increase the number of epochs for better learning
+    num_epochs = 10  # Increase the number of epochs for better learning
     num_classes = 10
 
     # Instantiate the model
@@ -130,3 +138,19 @@ if __name__ == "__main__":
 
     # Save the trained model if needed
     torch.save(model.state_dict(), 'trained_model.pth')
+
+    # Testing loop
+    model.eval()
+    correct = 0
+    total = 0
+    with torch.no_grad():
+        for batch in test_loader:
+            inputs, labels = batch[0], batch[1]
+            outputs = model(inputs)
+            predicted = outputs.argmax(1)
+            total += labels.size(0)
+            labels = labels.argmax(1)
+            correct += (predicted == labels).sum().item()
+
+    accuracy = 100 * correct / total
+    print(f"Test Accuracy: {accuracy:.2f}%")
