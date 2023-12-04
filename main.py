@@ -6,6 +6,8 @@ from torch.utils.data import DataLoader
 from astroNN.datasets import load_galaxy10
 import numpy as np
 from sklearn.model_selection import train_test_split
+import pandas as pd
+from results import *
 
 def to_categorical(y, num_classes):
     return np.eye(num_classes)[y]
@@ -113,7 +115,7 @@ if __name__ == "__main__":
     test_loader = DataLoader(test_dataset, batch_size=batch_size, shuffle=True)
 
     # Define the number of classes and epochs
-    num_epochs = 10  # Increase the number of epochs for better learning
+    num_epochs = 5  # Increase the number of epochs for better learning
     num_classes = 10
 
     # Instantiate the model
@@ -139,18 +141,4 @@ if __name__ == "__main__":
     # Save the trained model if needed
     torch.save(model.state_dict(), 'trained_model.pth')
 
-    # Testing loop
-    model.eval()
-    correct = 0
-    total = 0
-    with torch.no_grad():
-        for batch in test_loader:
-            inputs, labels = batch[0], batch[1]
-            outputs = model(inputs)
-            predicted = outputs.argmax(1)
-            total += labels.size(0)
-            labels = labels.argmax(1)
-            correct += (predicted == labels).sum().item()
-
-    accuracy = 100 * correct / total
-    print(f"Test Accuracy: {accuracy:.2f}%")
+    test_model(test_loader)
