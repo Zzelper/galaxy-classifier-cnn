@@ -71,4 +71,3 @@ if __name__ == "__main__":
 
     # Save the trained model (optional)
     torch.save(model.state_dict(), 'trained_model.pth')
-
