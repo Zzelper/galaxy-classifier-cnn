@@ -18,34 +18,10 @@ def load_images_labels():
     # To convert the labels to categorical 10 classes
     labels = to_categorical(labels, 10)
 
-    labels1 = labels[:10]
-    labels2 = labels[1000:1010]
-    labels3 = labels[2000:2010]
-    labels4 = labels[3000:3010]
-    labels5 = labels[5000:5010]
-    labels6 = labels[6000:6010]
-    labels7 = labels[7000:7010]
-    labels8 = labels[8000:8010]
-    labels9 = labels[9000:9010]
-    labels10 = labels[10000:10010]
-    new_labels = np.concatenate((labels1, labels2, labels3, labels4, labels5, labels6, labels7, labels8, labels9, labels10), axis=0)
-
-    images1 = images[:10]
-    images2 = images[1000:1010]
-    images3 = images[2000:2010]
-    images4 = images[3000:3010]
-    images5 = images[5000:5010]
-    images6 = images[6000:6010]
-    images7 = images[7000:7010]
-    images8 = images[8000:8010]
-    images9 = images[9000:9010]
-    images10 = images[10000:10010]
-    new_images = np.concatenate((images1, images2, images3, images4, images5, images6, images7, images8, images9, images10), axis=0)
-
     # To convert to desirable type
-    new_labels = torch.tensor(new_labels[:100], dtype=torch.float32)
-    new_images = torch.tensor(new_images[:100], dtype=torch.float32)
-    return new_images, new_labels
+    labels = torch.tensor(labels[:11], dtype=torch.float32)
+    images = torch.tensor(images[:11], dtype=torch.float32)
+    return images, labels
 
 def split_dataset(images, labels):
     train_idx, test_idx = train_test_split(np.arange(labels.shape[0]), test_size=0.1)
@@ -87,25 +63,16 @@ class ComplexCNN(nn.Module):
         
         return x
 
+# Main code
 if __name__ == "__main__":
     # Load your data
-    images, labels = load_images_labels()
-    images = images.permute(0, 3, 1, 2)
-    
-    # Normalize the images
-    normalize = transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
-    images = normalize(images)
-
-    # Split the data into training and testing sets
-    train_images, train_labels, test_images, test_labels = split_dataset(images, labels)
-
-    # Create DataLoader for training set
-    batch_size = 8  # Choose an appropriate batch size
-    train_dataset = list(zip(train_images, train_labels))
-    train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
+    images, labels = load_images_labels()  # Assuming this function loads your data
+    images = images.permute(0, 3, 1, 2)  # Permute the dimensions to match the model's input
+    images = images.unsqueeze(0)  # Add a dimension for the batch size
+    train_loader = zip(images, labels)
 
     # Define the number of classes and epochs
-    num_epochs = 50  # Increase the number of epochs for better learning
+    num_epochs = 1
     num_classes = 10
 
     # Instantiate the model
@@ -115,13 +82,19 @@ if __name__ == "__main__":
     criterion = nn.CrossEntropyLoss()
     optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
 
+    train_loader = list(zip(images, labels))
+
     # Training loop
     for epoch in range(num_epochs):
         running_loss = 0.0
-        for i, (images, labels) in enumerate(train_loader):
+        for i, data in enumerate(train_loader):
+            images, labels = data
             optimizer.zero_grad()
             outputs = model(images)
-            loss = criterion(outputs, labels.argmax(dim=1).type(torch.long))  # Ensure labels are torch.long
+            labels = labels.type(torch.long)
+            print(labels.shape)
+            print(outputs.shape)
+            loss = criterion(outputs, labels)
             loss.backward()
             optimizer.step()
             running_loss += loss.item()
