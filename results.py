@@ -70,7 +70,7 @@ def new_confusion_matrix(test_loader, PATH='trained_model.pth', num_classes=10):
             predicted = outputs.argmax(1)
             labels = labels.argmax(1)
             expected.append(labels)
-            test_labels.append(outputs)
+            test_labels.append(predicted)
 
     cm = confusion_matrix(test_labels, expected)
     ConfusionMatrixDisplay(cm).plot()
