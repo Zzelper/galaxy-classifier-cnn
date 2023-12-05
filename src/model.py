@@ -32,6 +32,12 @@ class GalaxyCNN(nn.Module):
     """
 
     def __init__(self, num_classes):
+        '''
+        Initialize CNN
+
+        Inputs:
+        - num_classes: number of classifications
+        '''
         super(GalaxyCNN, self).__init__()
         self.conv1 = nn.Conv2d(3, 16, kernel_size=3, padding=1)
         self.relu = nn.ReLU()
@@ -40,6 +46,15 @@ class GalaxyCNN(nn.Module):
         self.fc2 = nn.Linear(512, num_classes)
 
     def forward(self, x):
+        '''
+        Forward propagation of CNN
+
+        Inputs:
+        - x: image array of 256x256x3
+
+        Output:
+        - x: predicted label
+        '''
         x = self.conv1(x)
         x = self.relu(x)
         x = self.pool(x)
