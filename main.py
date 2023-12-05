@@ -12,48 +12,24 @@ from results import *
 def to_categorical(y, num_classes):
     return np.eye(num_classes)[y]
 
-def load_images_labels():
+def load_images_labels(samples=100):
     # To load images and labels (will download automatically at the first time)
-    # First time downloading location will be ~/.astroNN/datasets/
+    # First-time downloading location will be ~/.astroNN/datasets/
     images, labels = load_galaxy10()
 
     # To convert the labels to categorical 10 classes
     labels = to_categorical(labels, 10)
 
-    labels1 = labels[:10]
-    labels2 = labels[1000:1010]
-    labels3 = labels[2000:2010]
-    labels4 = labels[3000:3010]
-    labels5 = labels[5000:5010]
-    labels6 = labels[6000:6010]
-    labels7 = labels[7000:7010]
-    labels8 = labels[8000:8010]
-    labels9 = labels[9000:9010]
-    labels10 = labels[10000:10010]
-    labels11 = labels[11000:11010]
-    labels12 = labels[12000:12010]
-    new_labels = np.concatenate((labels1, labels2, labels3, labels4, labels5, labels6, labels7, labels8, labels9, labels10,
-                                 labels11, labels12), axis=0)
+    # if not taking full data, take random samples
+    idx = np.random.choice(np.arange(len(labels)), samples, replace=False)
+    labels = labels[idx]
+    images = images[idx]
 
-    images1 = images[:10]
-    images2 = images[1000:1010]
-    images3 = images[2000:2010]
-    images4 = images[3000:3010]
-    images5 = images[5000:5010]
-    images6 = images[6000:6010]
-    images7 = images[7000:7010]
-    images8 = images[8000:8010]
-    images9 = images[9000:9010]
-    images10 = images[10000:10010]
-    images11 = images[11000:11010]
-    images12 = images[12000:12010]
-    new_images = np.concatenate((images1, images2, images3, images4, images5, images6, images7, images8, images9, images10,
-                                 images11, images12), axis=0)
-
-    # To convert to desirable type
-    new_labels = torch.tensor(new_labels[:100], dtype=torch.float32)
-    new_images = torch.tensor(new_images[:100], dtype=torch.float32)
-    return new_images, new_labels
+    images = torch.tensor(images, dtype=torch.float32)
+    labels = torch.tensor(labels, dtype=torch.float32)
+    
+    #return new_images, new_labels
+    return images, labels
 
 def split_dataset(images, labels):
     train_idx, test_idx = train_test_split(np.arange(labels.shape[0]), test_size=0.1)
@@ -141,4 +117,4 @@ if __name__ == "__main__":
     # Save the trained model if needed
     torch.save(model.state_dict(), 'trained_model.pth')
 
-    test_model(test_loader)
+    new_confusion_matrix(train_loader)
