@@ -1,14 +1,12 @@
 import matplotlib.pyplot as plt
 import numpy as np
-import pandas as pd
 import torch
 from main import ComplexCNN
 from main import ComplexCNN
 from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
-from main import load_images_labels, split_dataset
-from torch.utils.data import DataLoader
 import json
 
+    
 def make_confusion_matrix(test_loader, PATH='trained_model.pth', num_classes=10):
     '''
     Function that loads and tests the model, then creates a confusion matrix 
@@ -22,7 +20,7 @@ def make_confusion_matrix(test_loader, PATH='trained_model.pth', num_classes=10)
     - None
     - Prints confusion matrix
     '''
-    
+
     # Testing loop
     model = ComplexCNN(num_classes)
     model.load_state_dict(torch.load(PATH))
