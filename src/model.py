@@ -5,7 +5,6 @@ import torchvision.transforms as transforms
 from torch.utils.data import DataLoader, random_split
 from torchvision import models
 import torchvision
-#from data_import import *
 
 # Define the ConvNet architecture
 class GalaxyCNN(nn.Module):
