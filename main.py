@@ -58,14 +58,18 @@ if __name__ == "__main__":
     num_epochs = 100
 
     scaler = GradScaler()
-    # The training loop iterates over the training data for a specified number of epochs.
-    # In each epoch, it iterates over the training data in batches. For each batch, it:
-    # - Zeroes the gradients of the model parameters
-    # - Runs the forward pass of the model in mixed precision using autocast
-    # - Computes the loss
-    # - Scales the loss using the GradScaler and backpropagates the scaled loss
-    # - Steps the optimizer and updates the GradScaler
-    # After each epoch, it computes and stores the training and testing accuracies.
+    
+    
+    """
+     The training loop iterates over the training data for a specified number of epochs.
+     In each epoch, it iterates over the training data in batches. For each batch, it:
+     - Zeroes the gradients of the model parameters
+     - Runs the forward pass of the model in mixed precision using autocast
+     - Computes the loss
+     - Scales the loss using the GradScaler and backpropagates the scaled loss
+     - Steps the optimizer and updates the GradScaler
+     After each epoch, it computes and stores the training and testing accuracies.
+    """
     for epoch in range(num_epochs):
         for batch in train_loader:
             inputs, labels = batch["data"].to(device), batch["label"].to(device)
