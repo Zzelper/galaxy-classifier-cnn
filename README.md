@@ -37,6 +37,10 @@ The repository is structured as follows:
   - `results.py`: Contains functions for analyzing and visualizing the results.
 - `main.py`: The main script that ties everything together.
 
+- `params.json`: Contains configurable hyperparameters: learnig rate, number of epochs, and batch size.
+- `classes.json`: Galaxy classficiations and their numerical label.
+
+
 ## Dependencies
 The project depends on the following Python libraries:
 - PyTorch
