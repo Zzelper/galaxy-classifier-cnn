@@ -1,9 +1,10 @@
 from src.data_import import *
 from src.model import *
 import matplotlib.pyplot as plt
+from torch import optim
 
 if __name__ == "__main__":
-    images, labels = load_images_labels(17)
+    images, labels = load_images_labels(10)
     train_images, train_labels, test_images, test_labels = split_dataset(images, labels)
 
     # Load your dataset and apply data augmentation
@@ -18,9 +19,13 @@ if __name__ == "__main__":
 
     # Define the loss function and optimizer
     criterion = nn.CrossEntropyLoss()
-    optimizer = optim.Adam(model.parameters(), lr=0.001)
+    optimizer = optim.Adam(model.parameters(), lr=0.0001)
+    # Define the learning rate scheduler
+    scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='min', factor=0.1, patience=5, verbose=True)
+    #scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=10, gamma=0.1, verbose=True)
 
     # Training loop
+    accuracies = []
     num_epochs = 50
     for epoch in range(num_epochs):
         model.train()
@@ -40,16 +45,27 @@ if __name__ == "__main__":
         model.eval()
         correct = 0
         total = 0
+        validation_loss = 0.0
+        num_batches = 0
         with torch.no_grad():
             for batch in test_loader:
                 inputs, labels = batch["data"], batch["label"]
                 outputs = model(inputs)
+                loss = criterion(outputs, labels)
+                validation_loss += loss.item()
+                num_batches += 1
                 predicted = outputs.argmax(1)
                 total += labels.size(0)
                 labels = labels.argmax(1)
                 correct += (predicted == labels).sum().item()
 
         accuracy = 100 * correct / total
+        accuracies.append(accuracy)
         print(f"Test Accuracy: {accuracy:.2f}%")
-
+        scheduler.step(validation_loss)
+        #scheduler.step()
+    fig = plt.figure()
+    ax = fig.add_subplot(111)
+    ax.plot(list(range(len(accuracies))), accuracies)
+    plt.show()
 
