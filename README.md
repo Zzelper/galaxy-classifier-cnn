@@ -20,7 +20,7 @@ This repository contains a re-implementation of the CNN galaxy classification mo
     by: Premanand Ghadekar, Kunal Chanda, Sakshi Manmode, Sanika Rawate, Shivam Chaudhary & Resham Suryawanshi 
 
 This is a PyTorch-based image classification task for galaxy images. 
-The goal is to classify galaxy images into 10 different classes: (give the classificaitons)
+The goal is to classify galaxy images into 10 different classes, outlined in the classes.json file.
 
 ## How to Run
 To run the main script, navigate to the root directory of the repository and run the following command:
