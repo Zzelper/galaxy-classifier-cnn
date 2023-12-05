@@ -8,7 +8,7 @@ from torch.cuda.amp import GradScaler, autocast
 if __name__ == "__main__":
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
-    images, labels = load_images_labels(100)
+    images, labels = load_images_labels(1)
 
     train_images, train_labels, test_images, test_labels = split_dataset(images, labels)
 
@@ -40,7 +40,7 @@ if __name__ == "__main__":
     test_accuracies = []
 
     # Training loop
-    num_epochs = 5
+    num_epochs = 100
 
     scaler = GradScaler()
 
