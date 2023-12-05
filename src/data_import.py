@@ -16,12 +16,13 @@ class GalaxyDataset(Dataset):
         return len(self.data)
 
     def __getitem__(self, idx):
-        sample = {'data': self.data[idx], 'label': self.labels[idx]}
+        data = self.data[idx]
+        label = self.labels[idx]
 
         if self.transform:
-            sample = self.transform(sample)
+            data = self.transform(data)
 
-        return sample
+        return {'data': data, 'label': label}
 
 
 def to_categorical(y, num_classes):
