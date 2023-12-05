@@ -10,18 +10,19 @@ from torch.utils.data import DataLoader
 import json
 
 def make_confusion_matrix(test_loader, PATH='trained_model.pth', num_classes=10):
-  '''
-  Function that loads and tests the model, then creates a confusion matrix 
+    '''
+    Function that loads and tests the model, then creates a confusion matrix 
 
-  input:
-  - test_loader: test data
-  - PATH: relative path to model
-  - num_classes: number of classifications
+    input:
+    - test_loader: test data
+    - PATH: relative path to model
+    - num_classes: number of classifications
 
-  Output:
-  - None
-  - Prints confusion matrix
-  '''
+    Output:
+    - None
+    - Prints confusion matrix
+    '''
+    
     # Testing loop
     model = ComplexCNN(num_classes)
     model.load_state_dict(torch.load(PATH))
@@ -40,12 +41,11 @@ def make_confusion_matrix(test_loader, PATH='trained_model.pth', num_classes=10)
 
     with open('src/classes.json') as f:
         d = json.load(f)
-        print(list(d.keys()))
-        print(list(d.values()))
 
     cm = confusion_matrix(test_labels, expected)
     ConfusionMatrixDisplay(cm).plot()
     plt.xticks(np.arange(10), list(d.values()), rotation=45)
     plt.yticks(np.arange(10), list(d.values()), rotation=45)
+    plt.savefig('ConfusionMatrix.png')
     plt.show()
     return
