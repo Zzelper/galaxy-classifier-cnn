@@ -17,8 +17,6 @@ and will automatically download the dataset if it is not found.
 
 class GalaxyDataset(Dataset):
     """
-    GalaxyDataset is a subclass of torch.utils.data.Dataset used to represent the Galaxy10 dataset.
-
     This class overrides the __len__ and __getitem__ methods for compatibility with PyTorch's data loading utilities. 
     It also provides an optional transform argument in its constructor for data augmentation.
 
