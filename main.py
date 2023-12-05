@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import torch
 from src.results import *
 from torch.cuda.amp import GradScaler, autocast
+import json
 
 """
 piersonmain.py
@@ -23,10 +24,19 @@ The script is designed to run on a CUDA-enabled GPU if available, and falls back
 if __name__ == "__main__":
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
+    # Hyperparameters:
+    with open('params.json', 'r') as json_file:
+        params = json.load(json_file)
+    num_epochs = params['num_epochs']
+    learning_rate = params['learning_rate']
+    batch_size = params['batch_size']
+
+
+    # Load the images and labels
     images, labels = load_images_labels(1)
 
+    # Split the dataset into training and testing
     train_images, train_labels, test_images, test_labels = split_dataset(images, labels)
-
 
     # Define the transformations
     data_transforms = transforms.Compose([
@@ -41,25 +51,22 @@ if __name__ == "__main__":
     test_dataset = GalaxyDataset(test_images, test_labels)
 
     # Create your DataLoader instances
-    train_loader = DataLoader(train_dataset, batch_size=512, shuffle=True)
-    test_loader = DataLoader(test_dataset, batch_size=512, shuffle=False)
+    train_loader = DataLoader(train_dataset, batch_size= batch_size, shuffle=True)
+    test_loader = DataLoader(test_dataset, batch_size= batch_size, shuffle=False)
 
     # Initialize the model
     model = GalaxyCNN(num_classes=10).to(device)
 
     # Define the loss function and optimizer
     criterion = nn.CrossEntropyLoss()
-    optimizer = optim.Adam(model.parameters(), lr=0.000005)
+    optimizer = optim.Adam(model.parameters(), lr=learning_rate)
 
     train_accuracies = []
     test_accuracies = []
 
-    # Training loop
-    num_epochs = 100
 
-    scaler = GradScaler()
-    
-    
+    # Training loop
+    scaler = GradScaler()    
     """
      The training loop iterates over the training data for a specified number of epochs.
      In each epoch, it iterates over the training data in batches. For each batch, it:

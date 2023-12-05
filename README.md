@@ -45,6 +45,7 @@ The project depends on the following Python libraries:
 - matplotlib
 - sklearn
 - astroNN
+- json
 
 ## AI Usage Statement
 This project leverages ChatGPT and GitHub Copilot as secondary yet important tools.
