@@ -1,8 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import torch
-from main import ComplexCNN
-from main import ComplexCNN
+from model import GalaxyCNN as ComplexCNN
 from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
 import json
 
