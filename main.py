@@ -86,6 +86,7 @@ if __name__ == "__main__":
         train_accuracies.append(accuracy(model, train_loader, device))
         test_accuracies.append(accuracy(model, test_loader, device))
 
+    # plot accuracies and dave plot
     fig = plt.figure()
     ax = fig.add_subplot(111)
     epochs = list(range(num_epochs))
