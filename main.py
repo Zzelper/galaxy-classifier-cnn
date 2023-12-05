@@ -93,6 +93,7 @@ if __name__ == "__main__":
             scaler.update()
 
         print(f"Epoch {epoch + 1}/{num_epochs}, Loss: {loss.item():.4f}")
+        # accuracy is calculated by counting the number of correct predictions in the testing batch over the number of inccorect predictions
         train_accuracies.append(accuracy(model, train_loader, device))
         test_accuracies.append(accuracy(model, test_loader, device))
 
