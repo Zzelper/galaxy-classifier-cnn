@@ -1,6 +1,6 @@
 # PHYS 449 - Galaxy Image Classification
-Final project for the PHYS-449 class.
-Group members: Dvir Zagury, Pierson Tomietto, Evan Ru-Xiang Chow, Patrick Thompson.
+Final project for the PHYS-449 class.  
+Group members: Dvir Zagury, Pierson Tomietto, Evan Ru-Xiang Chow, Patrick Thompson.  
 This repository is a reimplementation of the paper:
 
 **Title:** Galaxy Classification Using Deep Learning  
