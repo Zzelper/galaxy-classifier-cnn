@@ -1,14 +1,51 @@
-# PHYS449
+# PHYS 449 - Galaxy Image Classification
+Final project for the PHYS-449 class.
+Group members: Dvir Zagury, Pierson Tomietto, Evan Ru-Xiang Chow, Patrick Thompson.
+This repository is a reimplementation of the paper:
 
-## Dependencies
+**Title:** Galaxy Classification Using Deep Learning  
+**Authors:** P. Ghadekar, K. Chanda, S. Manmode, S. Rawate, S. Chaudhary, R. Suryawanshi  
+**Published in:** Advances in Smart Computing and Information Security (ASCIS) 2022  
+**DOI:** [10.1007/978-3-031-23092-9_1](https://doi.org/10.1007/978-3-031-23092-9_1)  
+**Published on:** 11 January 2023  
+**Publisher:** Springer, Cham  
+**Print ISBN:** 978-3-031-23091-2  
+**Online ISBN:** 978-3-031-23092-9
 
-- json
-- numpy
 
-## Running `main.py`
+## Purpose
+This repository contains a re-implementation of the CNN galaxy classification model described in the paper:
 
-To run `main.py`, use
+    "Galaxy Classification Using Deep Learning"
+    by: Premanand Ghadekar, Kunal Chanda, Sakshi Manmode, Sanika Rawate, Shivam Chaudhary & Resham Suryawanshi 
+
+This is a PyTorch-based image classification task for galaxy images. 
+The goal is to classify galaxy images into 10 different classes: (give the classificaitons)
+
+## How to Run
+To run the main script, navigate to the root directory of the repository and run the following command:
 
 ```sh
 python main.py
 ```
+
+## Repository Structure
+The repository is structured as follows:
+- `src/`: Contains the source code modules.
+  - `data_import.py`: Contains functions for loading and preprocessing the image data.
+  - `model.py`: Contains the `GalaxyCNN` class, a convolutional neural network for image classification.
+  - `results.py`: Contains functions for analyzing and visualizing the results.
+- `main.py`: The main script that ties everything together.
+
+## Dependencies
+The project depends on the following Python libraries:
+- PyTorch
+- torchvision
+- numpy
+- matplotlib
+- sklearn
+- astroNN
+
+## AI Usage Statement
+This project leverages ChatGPT and GitHub Copilot as secondary yet important tools.
+LLM resources were used for brainstorming, asking questions, seeking clarifications, generating code snippets, and suggesting different templates for code implementation.
