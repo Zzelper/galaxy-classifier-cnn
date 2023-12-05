@@ -81,7 +81,9 @@ def load_images_labels(step=1):
     """    
     # To load images and labels (will download automatically at the first time)
     # First time downloading location will be ~/.astroNN/datasets/
+    print("loading the galaxy10 dataset...")
     images, labels = load_galaxy10()
+    print("done loading. preprocessing...")
 
     # No need to convert the labels to categorical 10 classes
     # labels = to_categorical(labels, 10)
