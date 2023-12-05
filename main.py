@@ -7,11 +7,10 @@ from torch.cuda.amp import GradScaler, autocast
 import json
 
 """
-piersonmain.py
+main.py
 
-This script is the main entry point for a PyTorch-based image classification task. 
-It mainly loads and preprocesses the image data, defines a convolutional neural network model, 
-rains the model using a specified number of epochs. 
+This script mainly loads and preprocesses the image data, defines a CNN model, 
+trains the model using a specified number of epochs. 
 
 The script uses data augmentation techniques such as random flipping and rotation, and normalizes the images. 
 It also uses mixed precision training with the help of GradScaler.
