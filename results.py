@@ -3,6 +3,8 @@ import numpy as np
 import pandas as pd
 import torch
 from main import ComplexCNN
+from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
+
 
 def plot_confusion_matrix(df_confusion, title='Confusion matrix', cmap=plt.cm.gray_r):
 
@@ -53,3 +55,23 @@ def test_model(test_loader, PATH='trained_model.pth', num_classes=10):
     df_confusion = pd.crosstab(y_actu[0], y_pred[0])
     plot_confusion_matrix(df_confusion)
     
+def new_confusion_matrix(test_loader, PATH='trained_model.pth', num_classes=10):
+    # Testing loop
+    model = ComplexCNN(num_classes)
+    model.load_state_dict(torch.load(PATH))
+    model.eval()
+    expected = []
+    test_labels = []
+
+    with torch.no_grad():
+        for batch in test_loader:
+            inputs, labels = batch[0], batch[1]
+            outputs = model(inputs)
+            predicted = outputs.argmax(1)
+            labels = labels.argmax(1)
+            expected.append(labels)
+            test_labels.append(outputs)
+
+    cm = confusion_matrix(test_labels, expected)
+    ConfusionMatrixDisplay(cm).plot()
+    return
