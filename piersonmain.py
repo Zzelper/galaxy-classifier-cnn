@@ -2,6 +2,7 @@ from src.data_import import *
 from src.model import *
 import matplotlib.pyplot as plt
 import torch
+from src.results import *
 
 if __name__ == "__main__":
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -24,6 +25,9 @@ if __name__ == "__main__":
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.Adam(model.parameters(), lr=0.0000005)
 
+    train_accuracies = []
+    test_accuracies = []
+
     # Training loop
     num_epochs = 100
     for epoch in range(num_epochs):
@@ -36,18 +40,15 @@ if __name__ == "__main__":
             loss.backward()
             optimizer.step()
         print(f"Epoch {epoch + 1}/{num_epochs}, Loss: {loss.item():.4f}")
+        train_accuracies.append(accuracy(model, train_loader))
+        test_accuracies.append(accuracy(model, test_loader))
 
-    # Testing loop
-    model.eval()
-    correct = 0
-    total = 0
-    with torch.no_grad():
-        for batch in test_loader:
-            inputs, labels = batch["data"].to(device), batch["label"].to(device)
-            outputs = model(inputs)
-            predicted = outputs.argmax(1)
-            total += labels.size(0)
-            correct += (predicted == labels).sum().item()
-
-    accuracy = 100 * correct / total
-    print(f"Test Accuracy: {accuracy:.2f}%")
+    fig = plt.figure()
+    ax = fig.add_subplot(111)
+    epochs = list(range(num_epochs))
+    ax.plot(epochs, train_accuracies, label="Training")
+    ax.plot(epochs, test_accuracies, label="Testing")
+    ax.set_xlabel("Epochs")
+    ax.set_ylabel("Accuracy")
+    ax.legend()
+    plt.savefig("./data/accuracies.png")
